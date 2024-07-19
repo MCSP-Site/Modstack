@@ -112,7 +112,7 @@
             <h1>下载所选模组版本</h1>
             <div class="selection-feedback" id="selectionFeedback">未选择任何版本</div>
         </div>
-        <a id="downloadButton" class="download-btn" href="#" disabled>下载</a>
+        <button id="downloadButton" class="download-btn" disabled>下载</button>
     </div>
 </div>
 
@@ -123,7 +123,7 @@
 
     // 初始化 - 为每个模组绑定点击事件
     document.querySelectorAll('.mod-list li').forEach(function(mod) {
-     mod.addEventListener('click', function() {
+        mod.addEventListener('click', function() {
             // 显示当前模组的版本列表，隐藏其他版本列表
             document.querySelectorAll('.version-list').forEach(function(list) {
                 if (list.parentNode) {
@@ -159,7 +159,6 @@
     function updateDownloadButton() {
         const selectedLi = document.querySelector('.version-list li.selected');
         const selectedUrl = selectedLi ? selectedLi.dataset.url : null;
-        downloadButton.href = selectedUrl;
         downloadButton.disabled = !selectedUrl;
         if (selectedUrl) {
             downloadButton.textContent = '下载 ' + selectedLi.textContent;
@@ -188,6 +187,18 @@
             });
             updateSelectionFeedback();
             updateDownloadButton();
+        }
+    });
+
+    // 绑定下载按钮点击事件
+    downloadButton.addEventListener('click', function() {
+        const selectedLi = document.querySelector('.version-list li.selected');
+        if (selectedLi) {
+            const downloadUrl = selectedLi.dataset.url;
+            window.location.href = downloadUrl; // 跳转到下载链接
+            setTimeout(function() {
+                window.history.back(); // 下载完成后返回
+            }, 1000);
         }
     });
 </script>
