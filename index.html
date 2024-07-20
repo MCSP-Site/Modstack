@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>模组下载站点</title>
+    <title>模组下载网</title>
     <style>
         body, html {
             margin: 0;
@@ -11,194 +11,157 @@
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: white;
-        }
-        .container {
-            display: flex;
-            height: calc(100vh - 20px);
-            margin: 10px;
-        }
-        .sidebar {
-            width: 250px;
-            background: white;
-            border-right: 1px solid #ddd;
-            padding: 10px;
-            overflow-y: auto;
-            position: relative;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background: white;
+            color: black;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 20px;
+            background: #f4f4f4;
+            border-bottom: 1px solid #eaeaea;
         }
-        .mod-list, .version-list {
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .mod-list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
         .mod-list li {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
             position: relative;
+            padding: 10px;
+            cursor: default; /* 移除默认的鼠标指针样式 */
+            user-select: none; /* 防止文本被选中 */
+            border-bottom: 1px solid #eaeaea;
         }
         .mod-list li:last-child {
             border-bottom: none;
         }
+        .mod-title {
+            flex-grow: 1;
+            margin-right: 10px;
+            text-align: center;
+            word-wrap: break-word;
+            white-space: pre-wrap; /* 保持格式和换行 */
+        }
+        .triangle-btn {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 0 5px 8px;
+            border-color: transparent transparent transparent black;
+            transition: transform 0.3s;
+        }
+        .triangle-btn.open {
+            transform: rotate(90deg);
+        }
         .version-list {
-            display: none;
-            padding: 0;
-            background: #fff3f3; /* 粉色背景 */
-            margin-top: 10px;
-            border-radius: 5px;
+            max-height: 0;
             overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background-color: #fde6f4;
+            border-radius: 8px;
         }
-        .version-list li {
-            padding: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .version-list li.selected {
-            background: #ffd8d8;
-        }
-        .download-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 20px auto;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .download-btn:hover {
-            background-color: #0056b3;
-        }
-        .download-btn[disabled] {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .selection-feedback {
-            margin-top: 10px;
-            text-align: center;
+        .version-list li a {
+            text-decoration: none;
             color: #007BFF;
+            display: block;
+            padding: 8px 10px;
+            transition: background-color 0.3s;
         }
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
+        .version-list li a:hover {
+            background-color: #eaeaea;
+        }
+        .show-list .version-list {
+            max-height: 500px; /* 动态调整以适应内容 */
+        }
+        /* 导航优化 */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #eaeaea;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: black;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #dcdcdc;
+        }
+        /* 空间布局优化 */
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        /* 交互优化 */
+        .triangle-btn:hover {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
+<div class="header">
+    <h1>模组下载网</h1>
+</div>
+
+<div class="nav">
+    <a href="https://mcsp-site.github.io/">主页</a>
+    <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=RYSLX1OI2Sq_vsjvjCthGdhhunMrr0a1&authKey=CF%2FLjIx9pvr2wbWBmrs25Clmhjr1h06Zx8vD3p%2BfwYp%2BDbRjfJ8VVm1g8GRlIudT&noverify=0&group_code=795593685">QQ群</a>
+    <a href="https://b23.tv/9JOl1aj">作者B站</a>
+</div>
+
 <div class="container">
-    <div class="sidebar">
-        <ul class="mod-list">
-            <li data-versions='[{"version": "Fabric-mc1.20.1-0.5.8", "url": "https://116-142-255-139.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-843/dc025e23/1812148260-0/dc025e23d1e4234bc39e3386eae23f4b/c-m31?v=5&t=1721485088&s=1721485088b25d0095753c97db3b8aad2c2f519585&r=7GODV5&bzc=2&bzs=313833303333333337343a37333530313937373a3933303334333a30&filename=sodium-fabric-mc1.20.1-0.5.8-con-edit-v2.jar&x-mf-biz-cid=c32213df-fb1f-4b85-a4d7-48bdc5daffba-584000&auto_redirect=0&cache_type=1&xmfcid=e3f8c018-682c-4082-bd7f-cd0d49892eee-1-50111d3b1"}, {"version": "Fabric-mc1.20.2-0.5.5", "url": "https://116-142-255-140.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-417/58b9a40b/1812148260-0/58b9a40b3a778cf6d599231de547eda1/c-m27?v=5&t=1721485247&s=17214852470aa3cac4ba0709d99026ecc5c13fff45&r=O0766T&bzc=2&bzs=313833303333333337343a37333530313937383a3931363634393a30&filename=sodium-fabric-mc1.20.2-0.5.5-con-edit.jar&x-mf-biz-cid=ff7260af-fb25-4b9e-ab20-8ade62a5f8a4-c4937c&auto_redirect=0&cache_type=1&xmfcid=0d2f131d-0ebe-4c9d-91e6-f5aef6670680-0-50111d3b1"}, {"version": "Fabric-mc1.20.4-0.5.8", "url": "https://116-142-255-137.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-17/eefb5f45/1812148260-0/eefb5f4532ed1aa6929de809d8b5cc11/c-m27?v=5&t=1721485486&s=1721485486cc1241b1b10b5587c9228c36fc40f31d&r=NFOLE9&bzc=2&bzs=313833303333333337343a37333530313937393a3934383932343a30&filename=sodium-fabric-mc1.20.4-0.5.8-con-edit.jar&x-mf-biz-cid=1e855bb5-45a0-4aeb-925f-e1f7c629972d-584000&auto_redirect=0&cache_type=1&xmfcid=143b6423-82c5-4199-94b2-8dc4ed66d56f-0-50111d3b1"}, {"version": "Fabric-mc1.20.5-0.5.8", "url": "https://116-142-255-142.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-343/be833400/1812148260-0/be833400267bade444e19f39bed2d957/c-m34?v=5&t=1721485695&s=1721485695d0dfa1d0ebe8668bd7ee508028a8ea97&r=ZVD8DS&bzc=2&bzs=313833303333333337343a37333530313938303a3936363431383a30&filename=sodium-fabric-0.5.8%2Bmc1.2.0.5-con-edit.jar&x-mf-biz-cid=ff25f4c6-0f72-42ba-8ed6-1e1bfd054cec-3dab77&auto_redirect=0&cache_type=1&xmfcid=c4a354c9-dade-4cf7-ae03-101c7f6de2ea-1-50111d3b1"}, {"version": "Fabric-mc1.20.6-0.5.8", "url": "https://116-142-255-138.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-896/20d54433/1813927909-0/20d54433c0c8d251f2e0b1d30ce40380/c-m34?v=5&t=1721485761&s=17214857617e12651e2cdbb2682a71e635a5b894a2&r=VPD35P&bzc=2&bzs=313833303333333337343a37333530313938313a3933393430393a30&filename=sodium-fabric-0.5.8%2Bmc1.20.6-con-edit.jar&x-mf-biz-cid=39e2d099-a9d8-418e-b18c-aa90098641a9-3dab77&auto_redirect=0&cache_type=1&xmfcid=02fb0ae7-5a87-44a3-a866-bfe6618880c6-1-50111d3b1"}, {"version": "Fabric-mc1.21-0.5.9", "url": "https://116-142-255-137.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-848/349e85c5/1812148260-0/349e85c53e0d67ae482f2d0e16991b50/c-m44?v=5&t=1721485806&s=17214858067d0a4df840bf0e30469e9b7f483d1a6b&r=UCBBLO&bzc=2&bzs=313833303333333337343a37333530313938323a3936373730363a30&filename=sodium-fabric-0.5.9%2Bmc1.21-con-edit.jar&x-mf-biz-cid=543a7731-f52e-4368-92f9-1d7cd0818313-6eaa77&auto_redirect=0&cache_type=1&xmfcid=a9bb5f0a-c796-4e83-8de3-83a5defe8368-1-50111d3b1"}]'>钠(Sodium)魔改版</li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <div class="header">
-            <h1>下载所选模组版本</h1>
-            <div class="selection-feedback" id="selectionFeedback">未选择任何版本</div>
-        </div>
-        <button id="downloadButton" class="download-btn" disabled>下载</button>
-    </div>
+    <ul class="mod-list">
+        <!-- 模组列表项 -->
+        <li class="mod">
+            <div class="mod-title">钠(Sodium)魔改☻</div>
+            <div class="triangle-btn" aria-label="展开/收起版本列表"></div>
+            <ul class="version-list">
+                <li><a href="https://116-142-255-139.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-843/dc025e23/1812148260-0/dc025e23d1e4234bc39e3386eae23f4b/c-m31?v=5&t=1721485088&s=1721485088b25d0095753c97db3b8aad2c2f519585&r=7GODV5&bzc=2&bzs=313833303333333337343a37333530313937373a3933303334333a30&filename=sodium-fabric-mc1.20.1-0.5.8-con-edit-v2.jar&x-mf-biz-cid=c32213df-fb1f-4b85-a4d7-48bdc5daffba-584000&auto_redirect=0&cache_type=1&xmfcid=e3f8c018-682c-4082-bd7f-cd0d49892eee-1-50111d3b1" target="_blank">Fabric-mc1.20.1-0.5.8</a></li>
+                <li><a href="https://116-142-255-140.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-417/58b9a40b/1812148260-0/58b9a40b3a778cf6d599231de547eda1/c-m27?v=5&t=1721485247&s=17214852470aa3cac4ba0709d99026ecc5c13fff45&r=O0766T&bzc=2&bzs=313833303333333337343a37333530313937383a3931363634393a30&filename=sodium-fabric-mc1.20.2-0.5.5-con-edit.jar&x-mf-biz-cid=ff7260af-fb25-4b9e-ab20-8ade62a5f8a4-c4937c&auto_redirect=0&cache_type=1&xmfcid=0d2f131d-0ebe-4c9d-91e6-f5aef6670680-0-50111d3b1" target="_blank">Fabric-mc1.20.2-0.5.5</a></li>
+                <li><a href="https://116-142-255-137.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-17/eefb5f45/1812148260-0/eefb5f4532ed1aa6929de809d8b5cc11/c-m27?v=5&t=1721485486&s=1721485486cc1241b1b10b5587c9228c36fc40f31d&r=NFOLE9&bzc=2&bzs=313833303333333337343a37333530313937393a3934383932343a30&filename=sodium-fabric-mc1.20.4-0.5.8-con-edit.jar&x-mf-biz-cid=1e855bb5-45a0-4aeb-925f-e1f7c629972d-584000&auto_redirect=0&cache_type=1&xmfcid=143b6423-82c5-4199-94b2-8dc4ed66d56f-0-50111d3b1" target="_blank">Fabric-mc1.20.4-0.5.8</a></li>
+                <li><a href="https://116-142-255-142.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-343/be833400/1812148260-0/be833400267bade444e19f39bed2d957/c-m34?v=5&t=1721485695&s=1721485695d0dfa1d0ebe8668bd7ee508028a8ea97&r=ZVD8DS&bzc=2&bzs=313833303333333337343a37333530313938303a3936363431383a30&filename=sodium-fabric-0.5.8%2Bmc1.2.0.5-con-edit.jar&x-mf-biz-cid=ff25f4c6-0f72-42ba-8ed6-1e1bfd054cec-3dab77&auto_redirect=0&cache_type=1&xmfcid=c4a354c9-dade-4cf7-ae03-101c7f6de2ea-1-50111d3b1" target="_blank">Fabric-mc1.20.5-0.5.8</a></li>
+                <li><a href="https://116-142-255-138.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-896/20d54433/1813927909-0/20d54433c0c8d251f2e0b1d30ce40380/c-m34?v=5&t=1721485761&s=17214857617e12651e2cdbb2682a71e635a5b894a2&r=VPD35P&bzc=2&bzs=313833303333333337343a37333530313938313a3933393430393a30&filename=sodium-fabric-0.5.8%2Bmc1.20.6-con-edit.jar&x-mf-biz-cid=39e2d099-a9d8-418e-b18c-aa90098641a9-3dab77&auto_redirect=0&cache_type=1&xmfcid=02fb0ae7-5a87-44a3-a866-bfe6618880c6-1-50111d3b1" target="_blank">Fabric-mc1.20.6-0.5.8</a></li>                  
+                <li><a href="https://116-142-255-137.pd1.cjjd19.com:30443/download-cdn.cjjd19.com/123-848/349e85c5/1812148260-0/349e85c53e0d67ae482f2d0e16991b50/c-m44?v=5&t=1721485806&s=17214858067d0a4df840bf0e30469e9b7f483d1a6b&r=UCBBLO&bzc=2&bzs=313833303333333337343a37333530313938323a3936373730363a30&filename=sodium-fabric-0.5.9%2Bmc1.21-con-edit.jar&x-mf-biz-cid=543a7731-f52e-4368-92f9-1d7cd0818313-6eaa77&auto_redirect=0&cache_type=1&xmfcid=a9bb5f0a-c796-4e83-8de3-83a5defe8368-1-50111d3b1" target="_blank">Fabric-mc1.21-0.5.9</a></li>
+                <!-- 其他版本链接 -->
+            </ul>
+        </li>
+        <!-- 其他模组 -->
+    </ul>
 </div>
 
 <script>
-    var downloadButton = document.getElementById('downloadButton');
-    var selectionFeedback = document.getElementById('selectionFeedback');
-    var modList = document.querySelector('.mod-list');
-
-    // 初始化 - 为每个模组绑定点击事件
-    document.querySelectorAll('.mod-list li').forEach(function(mod) {
-        mod.addEventListener('click', function() {
-            // 显示当前模组的版本列表，隐藏其他版本列表
-            document.querySelectorAll('.version-list').forEach(function(list) {
-                if (list.parentNode) {
-                    list.parentNode.removeChild(list);
-                }
-            });
-
-            let versionList = document.createElement('ul');
-            versionList.className = 'version-list';
-            this.appendChild(versionList);
-
-            // 填充版本列表
-            const versions = JSON.parse(this.getAttribute('data-versions'));
-            versions.forEach(function(version) {
-                const item = document.createElement('li');
-                item.textContent = version.version;
-                item.dataset.url = version.url;
-                item.addEventListener('click', function() {
-                    // 切换选中状态
-                    this.classList.toggle('selected');
-                    // 更新下载按钮状态和链接
-                    updateDownloadButton();
-                    // 更新选择反馈
-                    updateSelectionFeedback();
-                });
-                versionList.appendChild(item);
-            });
-            versionList.style.display = 'block';
-        });
-    });
-
-    // 更新下载按钮状态和链接
-    function updateDownloadButton() {
-        const selectedLi = document.querySelector('.version-list li.selected');
-        const selectedUrl = selectedLi ? selectedLi.dataset.url : null;
-        downloadButton.disabled = !selectedUrl;
-        if (selectedUrl) {
-            downloadButton.textContent = '下载 ' + selectedLi.textContent;
+    document.addEventListener('click', function(e) {
+        const modItem = e.target.closest('.mod');
+        if (modItem) {
+            const triangleBtn = modItem.querySelector('.triangle-btn');
+            const versionList = modItem.querySelector('.version-list');
+            
+            modItem.classList.toggle('show-list');
+            triangleBtn.classList.toggle('open');
         } else {
-            downloadButton.textContent = '下载';
-        }
-    }
-
-    // 更新选择反馈
-    function updateSelectionFeedback() {
-        const selectedLis = document.querySelectorAll('.version-list li.selected');
-        const feedbackText = selectedLis.length 
-            ? `已选择版本：${Array.from(selectedLis).map(li => li.textContent).join(', ')}` 
-            : '未选择任何版本';
-        selectionFeedback.textContent = feedbackText;
-    }
-
-    // 点击空白区域隐藏版本列表
-    document.body.addEventListener('click', function(e) {
-        const clickedOutside = !modList.contains(e.target) && !e.target.closest('.version-list li');
-        if (clickedOutside) {
-            document.querySelectorAll('.version-list').forEach(function(list) {
-                if (list.parentNode) {
-                    list.parentNode.removeChild(list);
-                }
+            document.querySelectorAll('.mod').forEach(function(mod) {
+                mod.classList.remove('show-list');
+                mod.querySelector('.triangle-btn').classList.remove('open');
             });
-            updateSelectionFeedback();
-            updateDownloadButton();
-        }
-    });
-
-    // 绑定下载按钮点击事件
-    downloadButton.addEventListener('click', function() {
-        const selectedLi = document.querySelector('.version-list li.selected');
-        if (selectedLi) {
-            const downloadUrl = selectedLi.dataset.url;
-            window.location.href = downloadUrl; // 跳转到下载链接
-            setTimeout(function() {
-                window.history.back(); // 下载完成后返回
-            }, 1000);
         }
     });
 </script>
